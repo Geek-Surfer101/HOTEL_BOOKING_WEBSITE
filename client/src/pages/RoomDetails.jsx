@@ -20,29 +20,29 @@ const RoomDetails = () => {
     const [isAvailable, setIsAvailable] = useState(false);
 
     // check if room is available or not
-    const checkAvailability = async() => {
+    const checkAvailability = async () => {
         try {
             // check if checkindate is greater than checkoutdate
             if (checkInDate > checkOutDate) {
                 toast.error("Check-in date should be less than check-out date");
                 return;
             }
-            const {data} = await axios.post("/api/bookings/check-availability", {
+            const { data } = await axios.post("/api/bookings/check-availability", {
                 checkInDate,
                 checkOutDate,
                 room: id
             });
             if (data.success) {
-                if(data.isAvailable){
+                if (data.isAvailable) {
                     setIsAvailable(true);
                     toast.success("Room is available");
                 }
-                else{
+                else {
                     setIsAvailable(false);
                     toast.error("Room is not available");
                 }
             }
-            else{
+            else {
                 toast.error(data.message);
             }
         } catch (error) {
@@ -51,30 +51,30 @@ const RoomDetails = () => {
     }
 
     // onsubmitHandler function to check availability and book room
-    const onSubmitHandler = async(e) => {
+    const onSubmitHandler = async (e) => {
         try {
             e.preventDefault();
             if (!isAvailable) {
                 return checkAvailability();
             }
-            else{
-                const {data} = await axios.post('/api/bookings/book', {
+            else {
+                const { data } = await axios.post('/api/bookings/book', {
                     checkInDate,
                     checkOutDate,
                     room: id,
                     guests,
                     paymentMethod: "Pay at Hotel",
-                }, {headers: {Authorization: `Bearer ${await getToken()}`}});
+                }, { headers: { Authorization: `Bearer ${await getToken()}` } });
                 if (data.success) {
                     toast.success(data.message);
                     navigate('/my-bookings');
-                    scrollTo(0,0)
+                    scrollTo(0, 0)
                 }
-                else{
+                else {
                     toast.error(data.message);
                 }
             }
-            
+
         } catch (error) {
             toast.error(error.message);
         }
@@ -100,9 +100,6 @@ const RoomDetails = () => {
                         ({room.roomType})
                     </span>
                 </h1>
-                <p className="text-xs font-inter py-1.5 px-3 text-white bg-orange-500 rounded-full">
-                    20% OFF
-                </p>
             </div>
 
             {/* Room rating */}
@@ -138,11 +135,10 @@ const RoomDetails = () => {
                                 key={index}
                                 src={image}
                                 alt={`room-${index}`}
-                                className={`w-full rounded-xl shadow-md object-cover cursor-pointer ${
-                                    mainImage === image
-                                        ? "outline outline-[3px] outline-orange-500"
-                                        : ""
-                                }`}
+                                className={`w-full rounded-xl shadow-md object-cover cursor-pointer ${mainImage === image
+                                    ? "outline outline-[3px] outline-orange-500"
+                                    : ""
+                                    }`}
                             />
                         ))}
                 </div>
@@ -176,9 +172,9 @@ const RoomDetails = () => {
             </div>
 
             {/* Check-in checkout form */}
-            <form 
-            onSubmit={onSubmitHandler}
-            className="bg-white shadow-lg p-6 rounded-xl mx-auto mt-16 max-w-6xl">
+            <form
+                onSubmit={onSubmitHandler}
+                className="bg-white shadow-lg p-6 rounded-xl mx-auto mt-16 max-w-6xl">
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
                     {/* Check-In */}
                     <div className="flex flex-col">
@@ -189,7 +185,7 @@ const RoomDetails = () => {
                             Check-In
                         </label>
                         <input
-                            onChange={(e) => setCheckInDate(e.target.value)}    
+                            onChange={(e) => setCheckInDate(e.target.value)}
                             min={new Date().toISOString().split("T")[0]}
                             type="date"
                             id="checkInDate"
@@ -208,7 +204,7 @@ const RoomDetails = () => {
                         </label>
                         <input
                             onChange={(e) => setCheckOutDate(e.target.value)}
-                            min = {checkInDate}
+                            min={checkInDate}
                             disabled={!checkInDate}
                             type="date"
                             id="checkOutDate"
@@ -299,7 +295,10 @@ const RoomDetails = () => {
                         </div>
                     </div>
                 </div>
-                <button className="px-6 py-2.5 mt-4 rounded text-white bg-blue-600 hover:bg-blue-700 transition-all cursor-pointer">
+                <button
+                    onClick={() => toast.success(`Contact: ${room.hotel.contact}`)}
+                    className="px-6 py-2.5 mt-4 rounded text-white bg-blue-600 hover:bg-blue-700 transition-all cursor-pointer"
+                >
                     Contact Now
                 </button>
             </div>

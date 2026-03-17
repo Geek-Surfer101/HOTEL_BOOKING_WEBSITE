@@ -33,7 +33,7 @@ const Testimonials = () => {
                             </div>
                         </div>
                         <div className="flex items-center gap-1 mt-4">
-                            <StarRating />
+                            <StarRating rating={testimonial.rating} />
                         </div>
                         <p className="text-gray-500 max-w-90 mt-4">
                             "{testimonial.review}"

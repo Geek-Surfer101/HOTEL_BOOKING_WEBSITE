@@ -43,7 +43,7 @@ const Dashboard = () => {
                 align="left"
                 font="outfit"
                 title="Dashboard"
-                subtitle="Monitor your room listings, track bookings and analyze revenue - all in one place. Stay updated with real-time insights to ensure smooth operations."
+                subTitle="Monitor your room listings, track bookings and analyze revenue - all in one place. Stay updated with real-time insights to ensure smooth operations."
             />
             <div className="flex gap-4 my-8">
                 {/*** ----- Total bookings ----- ***/}
@@ -111,11 +111,10 @@ const Dashboard = () => {
                                 </td>
                                 <td className="py-3 px-4 border-t border-gray-300 flex">
                                     <button
-                                        className={`py-1 px-3 text-xs rounded-full mx-auto ${
-                                            item.isPaid
-                                                ? "bg-green-200 text-green-600 "
-                                                : "bg-amber-200 text-yellow-600"
-                                        }`}
+                                        className={`py-1 px-3 text-xs rounded-full mx-auto ${item.isPaid
+                                            ? "bg-green-200 text-green-600 "
+                                            : "bg-amber-200 text-yellow-600"
+                                            }`}
                                     >
                                         {item.isPaid ? "Completed" : "Pending"}
                                     </button>
