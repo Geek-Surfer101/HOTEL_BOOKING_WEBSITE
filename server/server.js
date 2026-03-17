@@ -40,8 +40,8 @@ app.use(async (req, res, next) => {
 
 // Simple health check route
 app.get("/", (req, res) => {
-  res.status(200).json({ 
-    message: "API is working", 
+  res.status(200).json({
+    message: "API is working",
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || 'development'
   });
@@ -49,7 +49,7 @@ app.get("/", (req, res) => {
 
 // Health check for serverless function
 app.get("/health", (req, res) => {
-  res.status(200).json({ 
+  res.status(200).json({
     status: "healthy",
     timestamp: new Date().toISOString()
   });
@@ -63,7 +63,7 @@ let isInitialized = false;
 
 const initializeConnections = async () => {
   if (isInitialized) return;
-  
+
   try {
     await connectDB();
     console.log("MongoDB connected successfully");
@@ -85,25 +85,25 @@ app.use('/api/bookings', bookingRouter);
 // Global error handler
 app.use((err, req, res, next) => {
   console.error('Global error handler:', err);
-  res.status(500).json({ 
-    success: false, 
+  res.status(500).json({
+    success: false,
     message: 'Internal server error',
     error: process.env.NODE_ENV === 'development' ? err.message : 'Something went wrong'
   });
 });
 
 // Handle 404 routes
-app.use('*', (req, res) => {
-  res.status(404).json({ 
-    success: false, 
-    message: 'Route not found' 
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: 'Route not found'
   });
 });
 
 // For local development server
 if (process.env.NODE_ENV !== 'production') {
   const PORT = process.env.PORT || 4000;
-  
+
   // Initialize connections for local development
   initializeConnections()
     .then(() => {
