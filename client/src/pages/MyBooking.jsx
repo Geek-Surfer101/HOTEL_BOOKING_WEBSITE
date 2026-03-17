@@ -5,16 +5,16 @@ import { useAppContext } from "../context/AppContext";
 import toast from "react-hot-toast";
 
 const MyBooking = () => {
-    const {getToken, axios, user} = useAppContext();
+    const { getToken, axios, user } = useAppContext();
     const [bookings, setBookings] = useState([]);
 
-    const fetchUserBookings = async() => {
+    const fetchUserBookings = async () => {
         try {
-            const {data} = await axios.get('/api/bookings/user', {headers: {Authorization: `Bearer ${await getToken()}`}});
-            if(data.success){
+            const { data } = await axios.get('/api/bookings/user', { headers: { Authorization: `Bearer ${await getToken()}` } });
+            if (data.success) {
                 setBookings(data.bookings);
             }
-            else{
+            else {
                 toast.error(data.message);
             }
         } catch (error) {
@@ -22,11 +22,11 @@ const MyBooking = () => {
         }
     }
     useEffect(() => {
-        if(user){
+        if (user) {
             fetchUserBookings();
         }
     }, [user]);
-    
+
     return (
         <div className="py-28 md:pb-32 md:pt-32 px-4 md:px-16 lg:px-24 xl:px-32">
             <Title
@@ -104,24 +104,25 @@ const MyBooking = () => {
                         <div className="flex flex-col items-start justify-center pt-3">
                             <div className="flex items-center gap-2">
                                 <div
-                                    className={`h-3 w-3 rounded-full ${
-                                        booking.isPaid
+                                    className={`h-3 w-3 rounded-full ${booking.isPaid
                                             ? "bg-green-500"
                                             : "bg-red-500"
-                                    }`}
+                                        }`}
                                 ></div>
                                 <p
-                                    className={`text-sm ${
-                                        booking.isPaid
+                                    className={`text-sm ${booking.isPaid
                                             ? "text-green-500"
                                             : "text-red-500"
-                                    }`}
+                                        }`}
                                 >
                                     {booking.isPaid ? "Paid" : "Unpaid"}
                                 </p>
                             </div>
                             {!booking.isPaid && (
-                                <button className="px-4 py-1.5 mt-4 text-xs border border-gray-400 rounded-full hover:bg-gray-50 transition-all cursor-pointer">
+                                <button
+                                    onClick={() => toast("Online payment coming soon!", { icon: "🔔" })}
+                                    className="px-4 py-1.5 mt-4 text-xs border border-gray-400 rounded-full hover:bg-gray-50 transition-all cursor-pointer"
+                                >
                                     Pay Now
                                 </button>
                             )}
